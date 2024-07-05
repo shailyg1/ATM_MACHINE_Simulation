@@ -1,0 +1,113 @@
+import java.util.ArrayList;
+import java.util.Scanner;
+
+public class ATMSimulation {
+
+    // Variables to store the account balance, PIN, and transaction history
+    private static double balance = 1000.00; // Initial balance set to $1000.00
+    private static int pin = 1234; // Default PIN set to 1234
+    private static ArrayList<String> transactionHistory = new ArrayList<>(); // List to store transaction history
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in); // Scanner object to take input from the user
+        boolean exit = false; // Flag to control the ATM menu loop
+
+        // Loop to display the ATM menu until the user chooses to exit
+        while (!exit) {
+            System.out.println("Welcome to the ATM!");
+            System.out.println("1. Account Balance Inquiry");
+            System.out.println("2. Cash Withdrawal");
+            System.out.println("3. Cash Deposit");
+            System.out.println("4. PIN Change");
+            System.out.println("5. Transaction History");
+            System.out.println("6. Exit");
+
+            System.out.print("Please select an option: ");
+            int choice = scanner.nextInt(); // Taking user's choice as input
+
+            // Switch case to handle different ATM functions based on user's choice
+            switch (choice) {
+                case 1:
+                    accountBalanceInquiry(); // Call to check account balance
+                    break;
+                case 2:
+                    cashWithdrawal(scanner); // Call to withdraw cash
+                    break;
+                case 3:
+                    cashDeposit(scanner); // Call to deposit cash
+                    break;
+                case 4:
+                    pinChange(scanner); // Call to change PIN
+                    break;
+                case 5:
+                    showTransactionHistory(); // Call to show transaction history
+                    break;
+                case 6:
+                    exit = true; // Exit the loop and end the program
+                    System.out.println("Thank you for using the ATM. Goodbye!");
+                    break;
+                default:
+                    System.out.println("Invalid option. Please try again."); // Handle invalid choices
+            }
+        }
+        scanner.close(); // Close the scanner object
+    }
+
+    // Function to check account balance
+    private static void accountBalanceInquiry() {
+        System.out.println("Your current balance is: $" + balance); // Display the current balance
+        transactionHistory.add("Balance Inquiry: $" + balance); // Add the balance inquiry to the transaction history
+    }
+
+    // Function to withdraw cash
+    private static void cashWithdrawal(Scanner scanner) {
+        System.out.print("Enter the amount to withdraw: ");
+        double amount = scanner.nextDouble(); // Taking withdrawal amount as input
+
+        // Check if there are sufficient funds for the withdrawal
+        if (amount > balance) {
+            System.out.println("Insufficient funds."); // Display error if funds are insufficient
+        } else {
+            balance -= amount; // Deduct the amount from the balance
+            System.out.println("You have successfully withdrawn $" + amount); // Confirm the withdrawal
+            transactionHistory.add("Withdrawal: $" + amount); // Add the withdrawal to the transaction history
+        }
+    }
+
+    // Function to deposit cash
+    private static void cashDeposit(Scanner scanner) {
+        System.out.print("Enter the amount to deposit: ");
+        double amount = scanner.nextDouble(); // Taking deposit amount as input
+
+        balance += amount; // Add the amount to the balance
+        System.out.println("You have successfully deposited $" + amount); // Confirm the deposit
+        transactionHistory.add("Deposit: $" + amount); // Add the deposit to the transaction history
+    }
+
+    // Function to change PIN
+    private static void pinChange(Scanner scanner) {
+        System.out.print("Enter your current PIN: ");
+        int currentPin = scanner.nextInt(); // Taking the current PIN as input
+
+        // Check if the entered PIN is correct
+        if (currentPin == pin) {
+            System.out.print("Enter your new PIN: ");
+            int newPin = scanner.nextInt(); // Taking the new PIN as input
+            pin = newPin; // Update the PIN
+            System.out.println("Your PIN has been successfully changed."); // Confirm the PIN change
+            transactionHistory.add("PIN Changed"); // Add the PIN change to the transaction history
+        } else {
+            System.out.println("Incorrect PIN. Please try again."); // Display error if the current PIN is incorrect
+        }
+    }
+
+    // Function to show transaction history
+    private static void showTransactionHistory() {
+        System.out.println("Transaction History:"); // Display the transaction history
+        // Loop through the transaction history and print each transaction
+        for (String transaction : transactionHistory) {
+            System.out.println(transaction);
+        }
+    }
+}
+
